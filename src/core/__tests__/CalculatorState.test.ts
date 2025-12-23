@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { CalculatorState } from '../CalculatorState';
-import type { HistoryItem, StateChangeListener } from '../../types';
+import type { HistoryItem } from '../../types';
 
 describe('CalculatorState', () => {
     let state: CalculatorState;

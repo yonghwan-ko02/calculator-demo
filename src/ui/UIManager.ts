@@ -22,7 +22,7 @@ export class UIManager {
     // UI 컨테이너
     private keypadContainer!: HTMLElement;
     private keypadSection!: HTMLElement;
-    private inlineHistoryContainer!: HTMLElement;
+
 
     constructor(state: CalculatorState) {
         this.state = state;

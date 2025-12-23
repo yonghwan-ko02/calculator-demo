@@ -40,7 +40,7 @@ export class Validators {
      * @param operator 추가할 연산자
      * @returns 추가 가능하면 true
      */
-    static canAddOperator(expression: string, operator: string): boolean {
+    static canAddOperator(expression: string, _operator: string): boolean {
         if (!expression || expression.trim() === '') return false;
 
         const trimmed = expression.trim();
