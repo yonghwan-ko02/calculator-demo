@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-    base: '/calculator-demo/',
+    base: './',
     test: {
         globals: true,
         environment: 'happy-dom',
