@@ -5,6 +5,8 @@ export interface CalculatorState {
     result: string | null;      // 계산 결과
     history: HistoryItem[];     // 계산 히스토리
     theme: ThemeType;           // 테마 설정
+    isDegree?: boolean;         // 각도 단위 (true: Degree, false: Radian)
+    isScientific?: boolean;     // 공학용 모드 여부
 }
 
 // 히스토리 아이템 인터페이스

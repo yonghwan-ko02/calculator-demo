@@ -50,7 +50,7 @@
 
 ### 2.2 확장 기능 (Phase 2)
 
-#### 2.2.1 공학 함수
+#### 2.2.1 공학 함수 (Scientific Mode)
 - **삼각함수**: sin, cos, tan, asin, acos, atan
 - **로그 함수**: log, ln
 - **지수 함수**: x², x³, xʸ, √, ∛

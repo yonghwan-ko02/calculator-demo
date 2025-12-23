@@ -1,27 +1,25 @@
-@import "tailwindcss";
-
-@theme {
+:root {
     /* 라이트 모드 컬러 */
-    --color-primary: #135bec;
-    --color-background: #f6f6f8;
-    --color-surface: #ffffff;
-    --color-button-number: #ffffff;
-    --color-button-operator: #f1f5f9;
-    --color-text: #0f172a;
-    --color-text-secondary: #64748b;
+    --color-primary: #007AFF;
+    --color-background: #F2F2F7;
+    --color-surface: rgba(255, 255, 255, 0.65);
+    --color-surface-brighter: rgba(255, 255, 255, 0.85);
+    --color-text: #1C1C1E;
+    --color-text-secondary: #8E8E93;
+    --color-border: rgba(255, 255, 255, 0.4);
+    --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.08);
 
     /* 다크 모드 컬러 */
-    --color-dark-primary: #135bec;
-    --color-dark-background: #101622;
-    --color-dark-surface: #0b0f17;
-    --color-dark-surface-dark: #1e2329;
-    --color-dark-button-number: #1e2329;
-    --color-dark-button-operator: #1e2329;
-    --color-dark-text: #ffffff;
-    --color-dark-text-secondary: #94a3b8;
+    --color-dark-primary: #0A84FF;
+    --color-dark-background: #000000;
+    --color-dark-surface: rgba(28, 28, 30, 0.65);
+    --color-dark-surface-brighter: rgba(44, 44, 46, 0.85);
+    --color-dark-text: #FFFFFF;
+    --color-dark-text-secondary: #98989D;
+    --color-dark-border: rgba(255, 255, 255, 0.1);
+    --shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
-/* 기본 스타일 초기화 */
 * {
     margin: 0;
     padding: 0;
@@ -29,7 +27,530 @@
 }
 
 body {
-    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    height: 100vh;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+.dark body {
+    background-color: var(--color-dark-background);
+    color: var(--color-dark-text);
+}
+
+/* App Container */
+#app {
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    /* 좌우 배치 */
+    position: relative;
+    max-width: 480px;
+    margin: 0 auto;
+    background: transparent;
+    transition: max-width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    align-items: stretch;
+    justify-content: center;
+}
+
+/* Scientific Mode: Expand Left -> Total 740px */
+.scientific-mode-active #app {
+    max-width: 740px;
+}
+
+/* History Mode: Expand Right -> Total 780px */
+.history-mode-active #app {
+    max-width: 780px;
+}
+
+/* Both Active: Total 1040px */
+.scientific-mode-active.history-mode-active #app {
+    max-width: 1040px;
+}
+
+/* Left Side Scientific Panel */
+/* Left Side Scientific Panel */
+/* Left Side Scientific Panel */
+/* Left Side Scientific Panel */
+.calc-scientific-section {
+    width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    background: var(--color-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    align-self: flex-end;
+    /* 하단 정렬 */
+    height: auto;
+    /* JS로 제어 (키패드 높이와 동기화) */
+    border-radius: 24px;
+}
+
+.dark .calc-scientific-section {
+    background: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+}
+
+.scientific-mode-active .calc-scientific-section {
+    width: 240px;
+    opacity: 1;
+    margin-right: 16px;
+    padding: 20px;
+    /* 상하좌우 20px 균일 패딩 (하단 여백과 동일하게 조정) */
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.scientific-panel {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    /* 높이 균등 분배 */
+    gap: 12px;
+    width: 100%;
+    height: 100%;
+    /* 부모(62%) 채움 */
+}
+
+/* Scientific Buttons Font Size */
+.scientific-panel .calc-button {
+    font-size: 20px;
+    font-weight: 500;
+    height: auto;
+    /* fr에 맞춰 늘어남 */
+}
+
+/* 다크모드 히스토리 텍스트 가시성 강화 (최종) */
+html.dark .history-panel-item .history-item-result,
+html.dark .history-item-result,
+html.dark .calc-history-section .history-item-result {
+    color: #FFFFFF !important;
+    opacity: 1 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    /* 대비 강화 */
+}
+
+html.dark .history-panel-item .history-item-expression,
+html.dark .history-item-expression {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Main Content Wrapper (Display + Keypad) */
+.calc-main-content {
+    flex: 0 0 480px;
+    /* 고정 너비 */
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    transition: all 0.4s ease;
+    background: transparent;
+}
+
+/* Header */
+.calc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px 8px;
+    z-index: 50;
+    width: 100%;
+    /* 메인 컨텐츠 내에서 꽉 차게 */
+}
+
+.calc-header button {
+    background: var(--color-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    height: 40px;
+    min-width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text);
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.calc-header button:hover {
+    background: var(--color-surface-brighter);
+    transform: scale(1.05);
+}
+
+.calc-header button:active {
+    transform: scale(0.95);
+    transition: all 0.1s ease;
+}
+
+.dark .calc-header button:hover {
+    background: var(--color-dark-surface-brighter);
+}
+
+
+
+
+/* Display */
+/* Display margin update */
+.calc-display-section {
+    margin-bottom: 80px;
+    /* 여백 50px -> 80px로 대폭 확대 */
+    padding-bottom: 0;
+}
+
+/* History Clear Button Margins */
+.history-clear-btn {
+    width: auto;
+    margin: 0 20px 20px 20px;
+    background-color: #FF3B30;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255, 59, 48, 0.3);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: block;
+}
+
+.history-clear-btn:hover {
+    background-color: #FF453A;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(255, 59, 48, 0.4);
+}
+
+.history-clear-btn:active {
+    transform: scale(0.96) translateY(0);
+    background-color: #D73328;
+}
+
+/* Ultimate Dark Mode Text Fix */
+html.dark .history-panel-item * {
+    color: #FFFFFF !important;
+}
+
+html.dark .history-item-expression {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.calc-display {
+    background: var(--color-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 160px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.dark .calc-display {
+    background: var(--color-dark-surface);
+    box-shadow: var(--shadow-dark);
+    border-color: var(--color-dark-border);
+}
+
+.display-expression {
+    font-size: 18px;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+    height: 24px;
+}
+
+.dark .display-expression {
+    color: var(--color-dark-text-secondary);
+}
+
+.display-number {
+    font-size: 56px;
+    font-weight: 300;
+    color: var(--color-text);
+    line-height: 1.1;
+    word-break: break-all;
+}
+
+.dark .display-number {
+    color: var(--color-dark-text);
+}
+
+/* Keypad Layout */
+.calc-keypad-section {
+    flex: 1;
+    display: flex;
+    /* Flex로 변경하여 Scientific 패널을 수용 */
+    padding: 0 20px 20px;
+    /* Display padding과 동일 */
+    gap: 16px;
+    overflow: visible;
+    /* 패널 확장을 위해 */
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Scientific Panel (Left Side of Main Content? No, it's inside keypad section) */
+/* JS 구조상 Keypad Section 내부에 있음. */
+/* 이를 메인 컨텐츠 왼쪽으로 꺼내는 처리가 필요하거나, Keypad Section을 Flex Row로 만듦 */
+
+
+/* Standard Keypad (Right Side) */
+.calc-keypad-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    min-width: 0;
+    /* Flex item overflow fix */
+}
+
+/* Buttons */
+/* Buttons - Interaction Polish */
+.calc-button {
+    background: var(--color-surface);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    font-size: 22px;
+    color: var(--color-text);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Interaction Transition */
+    transition: all 0.15s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.calc-button:hover {
+    background: #FFFFFF !important;
+    /* 라이트모드 호버 시 완전 흰색 강조 */
+    transform: translateY(-2px);
+    /* 호버 시 약간 뜸 */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    /* 그림자 강조 */
+}
+
+.calc-button:active {
+    transform: scale(0.96) translateY(0);
+    background: #E5E5EA !important;
+    /* 클릭 시 명확한 회색 피드백 */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.dark .calc-button:hover {
+    background: #3A3A3C !important;
+    /* 다크모드 호버: 짙은 회색 (흰색 글자와 대비 유지) */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.dark .calc-button:active {
+    background: #2C2C2E !important;
+    /* 다크모드 클릭: 약간 더 어두운 회색 */
+    transform: scale(0.96) translateY(0);
+}
+
+.dark .calc-button {
+    background: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text);
+}
+
+
+
+/* Special Button Colors */
+.calc-button-operator {
+    background-color: rgba(255, 149, 0, 0.1);
+    color: #FF9500;
+    font-weight: 600;
+}
+
+.dark .calc-button-operator {
+    background-color: rgba(255, 159, 10, 0.15);
+    color: #FF9F0A;
+}
+
+.calc-button-equals {
+    background-color: var(--color-primary) !important;
+    color: white !important;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.dark .calc-button-equals {
+    background-color: var(--color-dark-primary) !important;
+}
+
+/* History Panel Side (Right Side) */
+.calc-history-section {
+    width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    background: var(--color-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-left: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+}
+
+.dark .calc-history-section {
+    background: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+}
+
+.history-mode-active .calc-history-section {
+    width: 300px;
+    opacity: 1;
+    margin-left: 16px;
+    /* 메인 컨텐츠와 간격 */
+    border-radius: 24px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.history-panel-side {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.history-header {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    /* 타이틀 중앙 정렬 */
+    align-items: center;
+    border-bottom: none;
+    /* 헤더 구분선 제거 (버튼이 바로 오므로) */
+}
+
+.history-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.dark .history-title {
+    color: var(--color-dark-text);
+}
+
+.history-list-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px 20px;
+    /* 상단 패딩 제거 (헤더 아래 버튼 있음) */
+}
+
+.history-panel-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 16px 48px 16px 16px;
+    /* 우측 패딩 확보 (삭제 버튼용) */
+    margin-bottom: 12px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dark .history-panel-item {
+    background: rgba(40, 40, 40, 0.6);
+    /* 더 어두운 배경 */
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Mode History Text Visibility Fix */
+.history-item-result {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--color-text);
+    text-align: right;
+    margin-top: 4px;
+}
+
+.dark .history-item-result {
+    color: #FFFFFF !important;
+    /* 강제 흰색 */
+}
+
+.history-item-expression {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+.dark .history-item-expression {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.history-delete-btn {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FF3B30;
+    cursor: pointer;
+    padding: 0;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.history-delete-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.history-delete-btn:active {
+    transform: translateY(-50%) scale(0.95);
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.dark .history-delete-btn {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+
+
+/* Overriding Overlay Styles */
+.history-overlay {
+    display: none;
+}
+
+/* Inline History (Hidden in this design) */
+.calc-history {
+    display: none;
+}
+
+/* Dark Mode: RAD/DEG Button Exception (Restored) */
+.dark #angle-unit-btn:hover,
+.dark #angle-unit-btn:active {
+    background: var(--color-dark-surface) !important;
+    transform: scale(0.96);
 }

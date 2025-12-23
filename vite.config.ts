@@ -4,7 +4,7 @@ export default defineConfig({
     base: '/calculator-demo/',
     test: {
         globals: true,
-        environment: 'node',
+        environment: 'happy-dom',
         coverage: {
             provider: 'v8',
             reporter: ['text', 'json', 'html'],
