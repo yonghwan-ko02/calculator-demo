@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
   },
   "repository": {
     "type": "git",
@@ -24,10 +27,12 @@
   },
   "homepage": "https://github.com/yonghwan-ko02/calculator-demo#readme",
   "devDependencies": {
+    "@vitest/ui": "^4.0.16",
     "autoprefixer": "^10.4.23",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "vite": "^7.3.0"
+    "vite": "^7.3.0",
+    "vitest": "^4.0.16"
   }
 }
