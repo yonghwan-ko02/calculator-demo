@@ -1,0 +1,33 @@
+{
+  "name": "calculator-demo",
+  "version": "1.0.0",
+  "description": "공학용 계산기 웹 애플리케이션",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yonghwan-ko02/calculator-demo.git"
+  },
+  "keywords": [
+    "calculator",
+    "engineering",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yonghwan-ko02/calculator-demo/issues"
+  },
+  "homepage": "https://github.com/yonghwan-ko02/calculator-demo#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0"
+  }
+}
